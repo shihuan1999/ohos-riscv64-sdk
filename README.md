@@ -20,6 +20,8 @@ oh-sdk/23/
 ```
 
 SHA256：`da6ea57aa336154397ad176511f708cd0e7bbb3d67ef881891b8f4d6e19e9ad5`
+（109896037 字节；Release 上的资产按 16M 分卷发布 part0..part6，
+`install.sh` 自动下载合并，`cat part-* > tar.gz` 亦可手工复原）
 
 ## 调参说明（为什么和官方分发不一样）
 
@@ -41,6 +43,9 @@ sh install.sh            # 从本仓 Release 拉取 → 校验 → 解压到 /da
 
 离线场景：PC 下载 Release 资产后 `hdc file send` 推到 /data/stage/ 再执行
 `sh install.sh`（检测到本地已存在时跳过下载）。
+
+重启后（路由/DNS/vscode-server 丢失）：`sh /data/dev-env/start.sh` 一键恢复
+（脚本也收录于本仓 start-dev-env.sh）。
 
 ## 已知坑（本包已处理）
 
