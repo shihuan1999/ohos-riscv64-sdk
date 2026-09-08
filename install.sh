@@ -34,7 +34,7 @@ if [ ! -f "$STAGE/$TGZ" ]; then
 fi
 
 # 2. 完整性（设备 toybox 无 sha256sum，用字节数 + tar 目录校验）
-GOT=$(wc -c < "$STAGE/$TGZ" | tr -d ' ')
+set -- $(wc -c < "$STAGE/$TGZ"); GOT=$1
 if [ "$GOT" != "$SIZE" ]; then
   echo "[install] size mismatch: $GOT != $SIZE (expect). Remove $STAGE/$TGZ and retry." >&2
   exit 1
