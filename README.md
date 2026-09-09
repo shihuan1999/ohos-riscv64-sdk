@@ -88,3 +88,18 @@ hapdev 测试证书签名成功，覆盖安装报 9568332（系统应用须与�
 
 > 2026-09-08 在 K3 pico（hdc 147258369）实测：本包 + ondevice-hap-dev 重建后
 > `hapdev run`（编译→签名→安装→启动→NAPI dlopen）全绿。
+
+## 系统级应用一键编译（2026-09-09 固化）
+
+本 SDK（v2）+ [ondevice-hap-dev](https://github.com/shihuan1999/ondevice-hap-dev) ≥ 9a02edc：
+
+```sh
+hapdev new sysapp && hapdev run sysapp -s   # system_basic/hos_system_app profile 一键跑系统应用
+hapdev build settings                       # 多模块系统应用（如 ohos.settings，6 模块）
+```
+
+样板工程 `work/sysdemo`（@ohos.systemparameter + 特权权限）实测：编译→安装→
+启动→特权权限授予全绿；覆盖安装镜像内置系统应用仍需平台同源签名（9568332 属预期）。
+
+vscode-server（:3000）里 Ctrl+Shift+P → Tasks: Run Task，编译报错进 Problems 面板
+（`hapdev tasks` 生成任务配置，详见证仓 README"vscode-server 编译报错可视化"）。
