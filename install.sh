@@ -7,8 +7,8 @@
 set -e
 
 GH=https://github.com/shihuan1999/ohos-riscv64-sdk/releases/download/v6.1.0.32-api23
-TGZ=oh-sdk-23-riscv64-6.1.0.32.tar.gz
-SIZE=109896037
+TGZ=oh-sdk-23-riscv64-6.1.0.32-v2.tar.gz
+SIZE=110269758
 PARTS="0 1 2 3 4 5 6"
 DEST=/data/hap-dev/sdk/oh-sdk/23
 STAGE=/data/stage

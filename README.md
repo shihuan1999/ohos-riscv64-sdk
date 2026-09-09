@@ -19,8 +19,8 @@ oh-sdk/23/
 └── previewer/     占位清单（设备端无预览器）
 ```
 
-SHA256：`da6ea57aa336154397ad176511f708cd0e7bbb3d67ef881891b8f4d6e19e9ad5`
-（109896037 字节；Release 上的资产按 16M 分卷发布 part0..part6，
+SHA256（v2）：`684685eb2c816ac12bdefb8cbed6d06ac97217aac8fde525766c4fa1da2bcc7b`
+（110269758 字节；Release 资产按 16M 分卷发布 part0..part6，
 `install.sh` 自动下载合并，`cat part-* > tar.gz` 亦可手工复原）
 
 ## 调参说明（为什么和官方分发不一样）
@@ -46,6 +46,26 @@ sh install.sh            # 从本仓 Release 拉取 → 校验 → 解压到 /da
 
 重启后（路由/DNS/vscode-server 丢失）：`sh /data/dev-env/start.sh` 一键恢复
 （脚本也收录于本仓 start-dev-env.sh）。
+
+## v2（2026-09-09）：系统应用编译支持
+
+在 v1 基础上叠加三项（oh6.1 源码树实测 Settings 系统应用全量编译通过后固化）：
+
+1. **全系统 API d.ts**（ets/api 叠加 obj/interface/api 的 507 个顶层声明）——
+   公开发行 SDK 缺系统 API 类型（@ohos.systemparameter、accessibility.config、
+   vpn/wifiManager/bluetooth 系统成员等），系统应用 ArkTS 编译报 174 错；叠加后归零。
+2. **toolchains/syscapcheck/sysCapSchema.json**——系统应用触发 PreCheckSyscap，
+   公开组件缺该数据文件（报 00308018 ENOENT）。
+3. **module_mode.js 换回未打补丁原版**——hapdev 2026-08-22 的补丁版在多模块工程
+   （settings 6 模块）CompileArkTS 期崩溃（pkgContextInfo undefined reading 'phone'）；
+   原版下单模块 NAPI demo 回归全绿，补丁实为冗余。
+
+另：多模块工程 hvigor 会从 worker 线程直接 spawn java，主线程映射补丁覆盖不到，
+需在 PATH 放 java shim（见 ondevice-hap-dev 仓 bin/java）。
+
+实测（K3 pico，2026-09-09）：Settings（modelVersion 5.0.1 / 6 模块 / bundle
+com.ohos.settings）设备端 BUILD SUCCESSFUL → phone-default-unsigned.hap 5.0M；
+hapdev 测试证书签名成功，覆盖安装报 9568332（系统应用须与镜像同源平台签名，属预期）。
 
 ## 已知坑（本包已处理）
 

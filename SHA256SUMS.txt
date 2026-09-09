@@ -1,1 +1,1 @@
-da6ea57aa336154397ad176511f708cd0e7bbb3d67ef881891b8f4d6e19e9ad5  oh-sdk-23-riscv64-6.1.0.32.tar.gz
+684685eb2c816ac12bdefb8cbed6d06ac97217aac8fde525766c4fa1da2bcc7b  oh-sdk-23-riscv64-6.1.0.32-v2.tar.gz
