@@ -8,7 +8,10 @@ GW=${DHCP_GW:-10.0.90.254}
 route -n 2>/dev/null | grep -q '^0.0.0.0' || route add default gw $GW dev eth0
 mkdir -p /data/local/tmp/resolv
 printf 'nameserver 10.0.26.18\nnameserver 10.0.26.19\n' > /data/local/tmp/resolv/resolv.conf
-grep -q nameserver /etc/resolv.conf 2>/dev/null || \
+# 守卫必须查内网 DNS IP 而非泛 nameserver：原版 resolv.conf 自带
+# 114.114.114.114/8.8.8.8（公司网 UDP DNS 被拦，getaddrinfo 全挂），
+# 查 nameserver 会误判"已配置"而跳过 bind mount（2026-09-10 deveco 排查实测）。
+grep -q 10.0.26.18 /etc/resolv.conf 2>/dev/null || \
   mount --bind /data/local/tmp/resolv/resolv.conf /etc/resolv.conf
 # vscode-server（已监听则跳过）
 if ! cat /proc/net/tcp 2>/dev/null | grep -qi ':0BB8'; then
